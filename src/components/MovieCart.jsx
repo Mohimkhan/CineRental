@@ -6,11 +6,13 @@ import MovieDetailsModal from "./MovieDetailsModal";
 import tagImage from "../assets/tag.svg";
 import { getImgUrl } from "../../utils/cine-utility.js";
 import { MovieContext } from "../contexts/MoveContext.jsx";
+import { ADD_TO_CART } from "../constants/cart.js";
+import { Bounce, Flip, Slide, Zoom, toast } from "react-toastify";
 
 const MovieCart = ({ movie }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
-  const { cartData, setCartData } = useContext(MovieContext);
+  const { cartData, dispatch } = useContext(MovieContext);
 
   const handleMovieSelection = (movie) => {
     setSelectedMovie(movie);
@@ -24,14 +26,10 @@ const MovieCart = ({ movie }) => {
 
   const handleAddToCart = (event, movie) => {
     event.stopPropagation();
-
-    const found = cartData.find((item) => item.id === movie.id);
-
-    if (!found) {
-      setCartData((prev) => [...prev, movie]);
-    } else {
-      console.error(`The movie ${movie.title} is added to cart already!!!`);
-    }
+    dispatch({
+      type: ADD_TO_CART,
+      payload: movie,
+    });
   };
 
   return (
