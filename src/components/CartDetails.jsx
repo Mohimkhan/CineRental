@@ -5,14 +5,22 @@ import Delete from "../assets/delete.svg";
 import { getImgUrl } from "../../utils/cine-utility.js";
 import { useContext } from "react";
 import { MovieContext } from "../contexts/MoveContext";
+import { REMOVE_FROM_CART } from "../constants/cart.js";
+import { Zoom, toast } from "react-toastify";
 
 const CartDetails = ({ onClose }) => {
-  const { cartData, setCartData } = useContext(MovieContext);
+  const { cartData, dispatch } = useContext(MovieContext);
 
   const handleCartRemove = (id) => {
-    const newCart = cartData.filter((cartItem) => cartItem.id !== id);
+    dispatch({
+      type: REMOVE_FROM_CART,
+      id: id,
+    });
 
-    setCartData(newCart);
+    toast.error(`Movie removed from the cart!!!`, {
+      position: "bottom-right",
+      transition: Zoom,
+    });
   };
 
   return (
@@ -23,44 +31,48 @@ const CartDetails = ({ onClose }) => {
             Your Carts
           </h2>
           <div className="space-y-8 lg:space-y-12 max-h-[450px] overflow-auto mb-10 lg:mb-14">
-            {cartData.length === 0 ? (<p className="text-3xl">The Cart is Empty!!!</p>) : cartData.map((cartItem) => (
-              <div
-                key={cartItem.id}
-                className="grid grid-cols-[1fr_auto] gap-4"
-              >
-                <div className="flex items-center gap-4">
-                  <Image
-                    className="rounded overflow-hidden"
-                    imgSrc={getImgUrl(`${cartItem.cover}`)}
-                    width="60"
-                    height="60"
-                    altText={cartItem.title}
-                  />
-                  <div>
-                    <h3 className="text-base md:text-xl font-bold">
-                      {cartItem.title}
-                    </h3>
-                    <p className="max-md:text-xs text-[#575A6E]">
-                      {cartItem.genre}
-                    </p>
-                    <span className="max-md:text-xs">${cartItem.price}</span>
+            {cartData.length === 0 ? (
+              <p className="text-3xl">The Cart is Empty!!!</p>
+            ) : (
+              cartData.map((cartItem) => (
+                <div
+                  key={cartItem.id}
+                  className="grid grid-cols-[1fr_auto] gap-4"
+                >
+                  <div className="flex items-center gap-4">
+                    <Image
+                      className="rounded overflow-hidden"
+                      imgSrc={getImgUrl(`${cartItem.cover}`)}
+                      width="60"
+                      height="60"
+                      altText={cartItem.title}
+                    />
+                    <div>
+                      <h3 className="text-base md:text-xl font-bold">
+                        {cartItem.title}
+                      </h3>
+                      <p className="max-md:text-xs text-[#575A6E]">
+                        {cartItem.genre}
+                      </p>
+                      <span className="max-md:text-xs">${cartItem.price}</span>
+                    </div>
+                  </div>
+                  <div className="flex justify-between gap-4 items-center">
+                    <button
+                      className="bg-[#D42967] rounded-md p-2 md:px-4 inline-flex items-center space-x-2 text-white"
+                      onClick={() => handleCartRemove(cartItem.id)}
+                    >
+                      <Image
+                        className="w-5 h-5"
+                        imgSrc={Delete}
+                        altText="Delete"
+                      />
+                      <span className="max-md:hidden">Remove</span>
+                    </button>
                   </div>
                 </div>
-                <div className="flex justify-between gap-4 items-center">
-                  <button
-                    className="bg-[#D42967] rounded-md p-2 md:px-4 inline-flex items-center space-x-2 text-white"
-                    onClick={() => handleCartRemove(cartItem.id)}
-                  >
-                    <Image
-                      className="w-5 h-5"
-                      imgSrc={Delete}
-                      altText="Delete"
-                    />
-                    <span className="max-md:hidden">Remove</span>
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
           <div className="flex items-center justify-end gap-2">
             <Link
