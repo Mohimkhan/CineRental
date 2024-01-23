@@ -61,29 +61,6 @@ const CartDetails = ({ onClose }) => {
                 </div>
               </div>
             ))}
-
-            {/* <div className="grid grid-cols-[1fr_auto] gap-4">
-              <div className="flex items-center gap-4">
-                <Image
-                  className="rounded overflow-hidden"
-                  imgSrc={CartItem}
-                  altText="cart-item"
-                />
-                <div>
-                  <h3 className="text-base md:text-xl font-bold">Iron Man</h3>
-                  <p className="max-md:text-xs text-[#575A6E]">
-                    Action/Adventure/Sci-fi
-                  </p>
-                  <span className="max-md:text-xs">$100</span>
-                </div>
-              </div>
-              <div className="flex justify-between gap-4 items-center">
-                <button className="bg-[#D42967] rounded-md p-2 md:px-4 inline-flex items-center space-x-2 text-white">
-                  <Image className="w-5 h-5" imgSrc={Delete} altText="Delete" />
-                  <span className="max-md:hidden">Remove</span>
-                </button>
-              </div>
-            </div> */}
           </div>
           <div className="flex items-center justify-end gap-2">
             <Link
